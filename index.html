@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f4f0e8" />
+    <meta name="description" content="读取公开 Instagram 账号的帖子顺序、地址、正文和发布时间。" />
+    <title>Instagram 主页帖子信息读取器</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Postline 首页">
+          <span class="brand-mark" aria-hidden="true">P</span>
+          <span class="brand-name">POSTLINE</span>
+        </a>
+        <div class="topbar-note"><span class="status-dot" aria-hidden="true"></span>公开页面读取</div>
+      </header>
+
+      <main>
+        <section class="intro" aria-labelledby="page-title">
+          <p class="eyebrow">INSTAGRAM / PUBLIC VIEWER</p>
+          <h1 id="page-title">读取 Instagram 主页帖子信息</h1>
+          <p class="intro-copy">输入公开 Instagram 主页、帖子或 Reels 链接，查看账号资料、帖子地址、正文与发布时间。</p>
+        </section>
+
+        <section class="lookup-panel" aria-label="账号链接输入">
+          <form id="lookupForm" novalidate>
+            <label class="input-label" for="profileUrl">Instagram 链接</label>
+            <div class="lookup-row">
+              <div class="input-wrap">
+                <span class="input-prefix" aria-hidden="true">@</span>
+                <input id="profileUrl" name="profileUrl" type="url" inputmode="url" autocomplete="off"
+                  placeholder="https://www.instagram.com/username/ 或 /reel/…" spellcheck="false" required />
+              </div>
+              <button id="lookupButton" class="primary-button" type="submit">
+                <span class="button-label">查看帖子</span>
+                <span class="button-arrow" aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <div class="sort-row">
+              <label for="sortMode">排序方式</label>
+              <select id="sortMode" name="sortMode">
+                <option value="latest">按最新发布时间</option>
+                <option value="pinned">按 Instagram 页面顺序（含置顶）</option>
+              </select>
+            </div>
+            <div class="form-foot">
+              <p id="formHint" class="form-hint">支持公开账号主页、帖子和 Reels 链接</p>
+              <button id="clearButton" class="text-button" type="button" hidden>清空</button>
+            </div>
+          </form>
+        </section>
+
+        <section id="statePanel" class="state-panel" aria-live="polite" hidden>
+          <div id="stateIcon" class="state-icon" aria-hidden="true">i</div>
+          <div>
+            <h2 id="stateTitle">正在读取</h2>
+            <p id="stateMessage">正在请求公开页面，请稍候。</p>
+          </div>
+        </section>
+
+        <section id="results" class="results" hidden aria-labelledby="resultsTitle">
+          <div class="account-head">
+            <div class="account-identity">
+              <div id="accountAvatar" class="account-avatar" aria-hidden="true">@</div>
+              <div class="account-copy">
+                <p class="eyebrow">ACCOUNT</p>
+                <div class="account-name-row"><h2 id="resultsTitle">@username</h2><span id="accountVerified" class="verified-mark" aria-label="已认证" hidden>✓</span></div>
+                <a id="accountLink" class="account-link" href="#" target="_blank" rel="noopener noreferrer">打开 Instagram 主页 ↗</a>
+                <p id="accountFullName" class="account-full-name" hidden></p>
+                <p id="accountBio" class="account-bio" hidden></p>
+                <a id="accountExternal" class="account-external" href="#" target="_blank" rel="noopener noreferrer" hidden></a>
+              </div>
+            </div>
+            <div class="account-stats" aria-label="账号统计">
+              <div class="stat"><strong id="postCount">0</strong><span>帖子</span></div>
+              <div class="stat"><strong id="followerCount">—</strong><span>粉丝</span></div>
+              <div class="stat"><strong id="followingCount">—</strong><span>关注</span></div>
+              <div class="stat"><strong id="visibleCount">0</strong><span>已读取</span></div>
+            </div>
+          </div>
+
+          <div class="result-toolbar">
+            <div>
+              <h3>帖子时间线</h3>
+              <p id="resultNote">按页面返回顺序排列</p>
+            </div>
+            <button id="refreshButton" class="secondary-button" type="button"><span aria-hidden="true">↻</span>重新读取</button>
+          </div>
+
+          <div id="postList" class="post-list"></div>
+          <div id="emptyResults" class="empty-results" hidden>
+            <span class="empty-mark" aria-hidden="true">—</span>
+            <h3>没有读到帖子</h3>
+            <p>账号可能是私密账号，或 Instagram 暂时要求登录。</p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>POSTLINE</span>
+        <span>只读取公开页面可见数据</span>
+      </footer>
+    </div>
+    <script src="./app.js" defer></script>
+  </body>
+</html>

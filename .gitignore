@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+profile.html
+reel.html
+live.html
+reel-fix.png
+.venv/
+venv/
+env/
+.env
+
