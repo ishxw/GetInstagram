@@ -64,9 +64,9 @@ POST_TIMEOUT = 15
 MAX_POSTS = 50
 POST_WORKERS = 4
 
-# Instagram serves a more useful anonymous HTML variant to this conservative
-# public-page UA than to a fabricated full browser fingerprint.
-USER_AGENT = "Mozilla/5.0"
+# Ask for the same public desktop HTML variant used by a normal Chromium
+# window. Instagram can return a login shell to generic library user agents.
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
 
 
 class InstagramReadError(Exception):
@@ -830,6 +830,10 @@ def _fetch_html(url: str, timeout: int) -> str:
             "Accept": "text/html,application/xhtml+xml",
             "Accept-Language": "en-US,en;q=0.8,zh-CN;q=0.6",
             "Cache-Control": "no-cache",
+            "Sec-Fetch-Dest": "document",
+            "Sec-Fetch-Mode": "navigate",
+            "Sec-Fetch-Site": "none",
+            "Upgrade-Insecure-Requests": "1",
         },
         method="GET",
     )
@@ -953,7 +957,7 @@ def _profile_posts(source: str, requested_username: str) -> tuple[list[dict[str,
         warnings.append("Instagram did not expose embedded timeline JSON; results came from visible links only")
     if not posts:
         if "login" in source.lower() or "challenge" in source.lower():
-            warnings.append("Instagram returned a login or challenge page; no public posts were visible")
+            warnings.append("Instagram 返回了登录或访问验证页面，当前网络下未显示公开帖子。请稍后重试，或先在浏览器中完成 Instagram 验证。")
         else:
             warnings.append("No public posts were found in the profile HTML")
     return posts, warnings, profile_username
